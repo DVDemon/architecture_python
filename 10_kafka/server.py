@@ -4,7 +4,7 @@ import json
 # Конфигурация Kafka Consumer
 conf = {
     'bootstrap.servers': 'kafka1:9092,kafka2:9092',  # Адрес Kafka брокера
-    'group.id': 'user_group',  # ID группы потребителей
+    'group.id': 'my_group',  # ID группы потребителей
     'auto.offset.reset': 'earliest'  # Начинать с самого раннего сообщения
 }
 
@@ -12,7 +12,7 @@ conf = {
 consumer = Consumer(conf)
 
 # Подписка на топик
-consumer.subscribe(['user_topic'])
+consumer.subscribe(['topic_2'])
 
 # Цикл для получения сообщений
 try:

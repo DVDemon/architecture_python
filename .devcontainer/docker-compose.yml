@@ -1,6 +1,16 @@
 version: '3.3'
 
 services:
+
+  structurizr:
+    image: structurizr/lite
+    container_name: strl
+    ports:
+      - 9999:8080
+    volumes:
+        - ../01_structurizr:/usr/local/structurizr
+    networks:
+      - my_network
   app:
     build:
       context: ..

@@ -28,7 +28,7 @@ try:
             "email": "john.doe@example.com"
         }
         producer.produce(
-            topic='user_topic',  # Название топика
+            topic='topic_2',  # Название топика
             value=json.dumps(user_data),
             callback=delivery_report
         )

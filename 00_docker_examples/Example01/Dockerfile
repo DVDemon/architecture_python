@@ -1,6 +1,6 @@
 # our base image
 FROM ubuntu:latest
-RUN apt-get update -y && apt-get install nginx wget curl openssl apt-transport-https -y && apt-get clean -y
+RUN apt-get update -y && apt-get install nginx wget curl zip openssl apt-transport-https -y && apt-get clean -y
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 COPY index.html /var/www/html/
 EXPOSE 80 443
