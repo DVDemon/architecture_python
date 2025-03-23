@@ -1,0 +1,1 @@
+curl -X GET "http://0.0.0.0:8000/users" -H "accept: application/json" -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTc0MTU0MTExMX0.NYop2tWsDMrv79K-O8F2uAuwvrsDuvQBwyhAfjQHWII"
