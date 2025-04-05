@@ -4,11 +4,8 @@ from pydantic import BaseModel
 import os
 import json
 
-# Настройка SQLAlchemy
-DATABASE_URL = os.getenv("DATABASE_URL", "mongodb://mongodb:27017/")
-
 # Подключение к MongoDB
-client = MongoClient(DATABASE_URL)
+client = MongoClient(host=['mongodb:27017'])
 
 # Выбор базы данных
 db = client['arch']
