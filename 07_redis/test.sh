@@ -1,1 +1,1 @@
-wrk -d 20 -t 20 -c 20 --latency -s ./get.lua http://localhost:8000
+wrk -d 20 -t 1 -c 1 --latency -s ./get.lua http://localhost:8000

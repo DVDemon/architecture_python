@@ -1,0 +1,1 @@
+wrk -d 20 -t 1 -c 1 --latency -s ./get_no_cache.lua http://localhost:8000

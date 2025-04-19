@@ -81,6 +81,15 @@ def get_user(user_id: int, db: Session = Depends(get_db)):
             raise HTTPException(status_code=404, detail="User not found")
         return user
 
+@app.get("/users/no_cache/{user_id}", response_model=UserResponse, tags=["Users"])
+def get_user(user_id: int, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.id == user_id).first()
+    user_json = dict()
+    for k in user.__dict__:
+        if k != '_sa_instance_state':
+            user_json[k] = user.__dict__[k]
+    return user
+    
 # Маршрут для получения всех пользователей
 @app.get("/users/", response_model=list[UserResponse], tags=["Users"])
 def get_all_users(db: Session = Depends(get_db)):

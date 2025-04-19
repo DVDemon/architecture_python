@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 import json
 # Connect to MongoDB
-client = MongoClient('mongodb://mongodb:27017/')
+client = MongoClient(host=['mongodb:27017'])
 db = client['mydatabase']  # Specify the database name
 collection = db['mycollection']  # Specify the collection name
 
