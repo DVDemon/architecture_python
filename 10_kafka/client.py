@@ -21,7 +21,7 @@ def delivery_report(err, msg):
 
 # Преобразование данных в JSON и отправка в Kafka
 try:
-    for i in range(10000):
+    for i in range(100000):
         user_data = {
             "id": i,
             "name": "John Doe",

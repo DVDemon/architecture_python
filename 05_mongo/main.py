@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException
-from pymongo import MongoClient
+from pymongo import MongoClient, IndexModel, ASCENDING
 from pydantic import BaseModel
 import os
 import json
@@ -12,6 +12,10 @@ db = client['arch']
 
 # Выбор коллекции
 collection = db['users']
+
+collection.create_indexes([
+    IndexModel([("first_name", ASCENDING)])
+])
 
 # Модель SQLAlchemy
 class User(BaseModel):

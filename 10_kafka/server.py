@@ -4,7 +4,7 @@ import json
 # Конфигурация Kafka Consumer
 conf = {
     'bootstrap.servers': 'kafka1:9092,kafka2:9092',  # Адрес Kafka брокера
-    'group.id': 'my_group',  # ID группы потребителей
+    'group.id': 'my_group1',  # ID группы потребителей
     'auto.offset.reset': 'earliest'  # Начинать с самого раннего сообщения
 }
 

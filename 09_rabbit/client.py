@@ -12,7 +12,7 @@ channel = connection.channel()
 channel.queue_declare(queue='user_queue')
 
 # Преобразование данных в JSON и отправка в очередь
-for i in range(100000):
+for i in range(1000000):
     user_data = {
         "id": i,
         "name": "John Doe",
