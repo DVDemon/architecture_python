@@ -1,0 +1,134 @@
+{
+	"info": {
+		"_postman_id": "poco-template-server",
+		"name": "Poco Template Server",
+		"description": "Коллекция для проверки API Poco Template Server",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080"
+		},
+		{
+			"key": "jwt_token",
+			"value": ""
+		}
+	],
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Get JWT Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const json = pm.response.json();",
+									"    if (json.token) {",
+									"        pm.collectionVariables.set('jwt_token', json.token);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "user",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "password",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/auth",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "auth"]
+						},
+						"description": "Basic auth → JWT токен. Логин/пароль: user/password (проверка пароля пока не реализована)."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Hello World",
+			"item": [
+				{
+					"name": "GET Hello World",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/helloworld",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "helloworld"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Hello World (JWT)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/helloworld_jwt",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "helloworld_jwt"]
+						},
+						"description": "Требует Bearer токен. Сначала выполните Get JWT Token."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Metrics",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/metrics",
+					"host": ["{{base_url}}"],
+					"path": ["metrics"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Swagger",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/swagger.yaml",
+					"host": ["{{base_url}}"],
+					"path": ["swagger.yaml"]
+				}
+			},
+			"response": []
+		}
+	]
+}
