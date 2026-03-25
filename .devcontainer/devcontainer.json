@@ -8,12 +8,12 @@
     },
     "extensions": [
         "ms-python.python",
-        "ms-python.vscode-pylance",
+        "llvm-vs-code-extensions.vscode-clangd",
         "ckolkman.vscode-postgres",
         "cweijan.vscode-redis-client",
         "42crunch.vscode-openapi",
         "mongodb.mongodb-vscode",
         "jeppeandersen.vscode-kafka",
-        "/tmp/bee-c4-dsl-extension.vsix"
+        "/tmp/vimpelcom.c4-varp-1.0.15.vsix"
     ]
 }

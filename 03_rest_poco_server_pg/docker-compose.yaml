@@ -1,0 +1,31 @@
+services:
+  poco_template_server:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    environment:
+      PORT: 8080
+      LOG_LEVEL: information
+      JWT_SECRET: ${JWT_SECRET:-change-me-in-production}
+      PGHOST: postgres
+      PGPORT: 5432
+      PGDATABASE: poco_template
+      PGUSER: postgres
+      PGPASSWORD: postgres
+
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: poco_template
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
+

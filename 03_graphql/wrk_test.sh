@@ -1,0 +1,1 @@
+wrk -t10 -c10 -d30s -s test.lua http://localhost:8080/query
