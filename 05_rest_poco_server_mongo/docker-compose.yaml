@@ -1,0 +1,25 @@
+services:
+  poco_template_server:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      mongodb:
+        condition: service_started
+    environment:
+      PORT: 8080
+      LOG_LEVEL: information
+      JWT_SECRET: ${JWT_SECRET:-change-me-in-production}
+      MONGO_HOST: mongodb
+      MONGO_PORT: 27017
+      MONGO_DATABASE: poco_template
+
+  mongodb:
+    image: mongo:5.0
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodata:/data/db
+
+volumes:
+  mongodata:

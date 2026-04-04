@@ -71,11 +71,14 @@ def ensure_users(base_url: str, target_users: int, target_orgs: int, first_name_
         return
 
     # Create missing users
-    for i in range(current_count + 1, target_users + 1):
+    total_to_create = target_users - current_count
+    for n, i in enumerate(range(current_count + 1, target_users + 1), start=1):
+        if n == 1 or n % 1000 == 0 or n == total_to_create:
+            print(f"Creating users: {n}/{total_to_create} (next id slot {i})...", file=sys.stderr)
         org_idx = (i - 1) % target_orgs
         org_id = org_name_to_id[f"Org{org_idx}"]
 
-        # Keep a predictable pattern for full-text search terms.
+        # Keep a predictable pattern for search-by-substring (regex) load tests.
         payload = {
             "first_name": f"FirstName{i % 100}",
             "last_name": f"LastName{i % 100}",
