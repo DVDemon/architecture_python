@@ -1,0 +1,72 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: keycloak
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U keycloak -d keycloak"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.0
+    command: start-dev --import-realm
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: keycloak
+      # Чтобы issuer и endpoints в токенах совпадали с URL в браузере (localhost), а не с внутренним именем Docker
+      KC_HOSTNAME: localhost
+      KC_HOSTNAME_PORT: "8080"
+      KC_HOSTNAME_STRICT: "false"
+      KC_HTTP_ENABLED: "true"
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./keycloak/import:/opt/keycloak/data/import
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      OIDC_ISSUER: http://localhost:8080/realms/demo
+      JWKS_URL: http://keycloak:8080/realms/demo/protocol/openid-connect/certs
+      OIDC_CLIENT_ID: demo-frontend
+    depends_on:
+      - keycloak
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_BACKEND_URL: http://localhost:8000
+    ports:
+      - "3000:3000"
+    environment:
+      AUTH_URL: http://localhost:3000
+      AUTH_SECRET: ${AUTH_SECRET:-dev-only-change-in-production-use-openssl-rand-base64-32}
+      AUTH_KEYCLOAK_ISSUER: http://localhost:8080/realms/demo
+      # Вызовы token/userinfo из контейнера frontend — на сервис Docker, не на localhost
+      AUTH_KEYCLOAK_ISSUER_INTERNAL: http://keycloak:8080/realms/demo
+      AUTH_KEYCLOAK_ID: demo-frontend
+      AUTH_KEYCLOAK_SECRET: ""
+      AUTH_TRUST_HOST: "true"
+      NEXT_PUBLIC_BACKEND_URL: http://localhost:8000
+    depends_on:
+      - backend
+      - keycloak
+
+volumes:
+  postgres_data:
